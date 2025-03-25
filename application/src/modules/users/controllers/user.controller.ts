@@ -1,3 +1,4 @@
+/**
 import { Request, Response } from 'express';
 import { UserService } from '@modules/users/services/user.service';
 import { IUser } from '@core/interfaces/user.interface';
@@ -22,3 +23,4 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: error.message });
   }
 };
+*/

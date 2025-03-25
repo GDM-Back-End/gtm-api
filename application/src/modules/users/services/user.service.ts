@@ -1,3 +1,4 @@
+/**
 import { UserModel } from '@modules/users/models/user.model';
 import { IUser } from '@core/interfaces/user.interface';
 
@@ -13,3 +14,4 @@ export class UserService {
     return newUser.save();
   }
 }
+*/

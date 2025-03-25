@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import { MongoConnection } from "@config/database/mongodb.config";
-import { userRouter } from '@modules/users/routes/user.routes';
+//import { MongoConnection } from "@config/database/mongodb.config";
 import setupSwagger from "@core/documentation/swagger";
+import{ gtmRouter } from '@modules/gtm/routes/gtm.routes';
 
 class App {
   public app: express.Application;
@@ -18,12 +18,12 @@ class App {
 
   configureRoutes() {
     setupSwagger(this.app);
-    this.app.use(userRouter);
+    this.app.use('/gtm', gtmRouter);
   }
 
   async startServer(port: number) {
     try {
-      await MongoConnection.connect();
+      //await MongoConnection.connect();
       this.configureMiddlewares();
       this.configureRoutes();
       

@@ -1,3 +1,4 @@
+/** 
 import mongoose from 'mongoose';
 import config from '@config/env/dotenv.config';
 
@@ -23,3 +24,4 @@ class MongoConnection {
 }
 
 export { MongoConnection };
+*/

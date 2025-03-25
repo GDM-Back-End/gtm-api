@@ -1,4 +1,4 @@
-import mongoose, { Schema, Model } from 'mongoose';
+/**
 import { IUser } from '@core/interfaces/user.interface';
 
 const UserSchema: Schema = new Schema(
@@ -23,3 +23,4 @@ const UserSchema: Schema = new Schema(
 const UserModel: Model<IUser> = mongoose.model<IUser>('User', UserSchema);
 
 export { UserModel };
+*/

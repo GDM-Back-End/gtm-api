@@ -4,5 +4,5 @@ dotenv.config();
 
 export default {
   port: process.env.PORT || 3000,
-  databaseUrl: process.env.MONGO_CONNECTION || '',
+  //databaseUrl: process.env.MONGO_CONNECTION || '',
 };
