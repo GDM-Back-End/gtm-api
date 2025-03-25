@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import { sendSignupEvent, sendPurchaseEvent } from '@modules/gtm/controllers/gtm.controller';
+import { handleGenericEvent } from '@modules/gtm/controllers/gtm.controller';
 
 const gtmRouter = Router();
 
-gtmRouter.post('/signup', sendSignupEvent);
-gtmRouter.post('/purchase', sendPurchaseEvent);
+gtmRouter.post(
+    '/event/:subid/:status/:payout?/:currency?/:user_email?/:user_phone?',
+    handleGenericEvent
+  );
 
 export { gtmRouter };

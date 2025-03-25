@@ -3,33 +3,38 @@ import { GtmService } from '@modules/gtm/services/gtm.service';
 
 const gtmService = new GtmService();
 
-export const sendSignupEvent = async (req: Request, res: Response): Promise<void> => {
+export const handleGenericEvent = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { clientId, email } = req.body;
+    const { subid, status, payout, currency, user_email, user_phone } = req.params;
 
-    await gtmService.sendEvent('sign_up', clientId, {
-      method: 'email',
-      email,
-    });
+    if (!subid || !status) {
+      return res.status(400).json({ error: 'Campos obrigatórios: subid e status' });
+    }
 
-    res.status(200).json({ message: 'SIGNUP event sent successfully.' });
+    if (status !== 'purchase' && status !== 'sign_up') {
+      return res.status(400).json({ error: 'Status inválido. Use "purchase" ou "sign_up"' });
+    }
+
+    let payload: Record<string, any> = {
+      clickId: subid,
+      timeStamp: new Date().toISOString(),
+    };
+
+    if (status === 'purchase') {
+      payload.conversionValue = payout || 0;
+      payload.currency = currency || 'BRL';
+    }
+
+    if (status === 'sign_up') {
+      payload.email = user_email;
+      payload.phone = user_phone;
+      payload.method = 'email';
+    }
+
+    await gtmService.sendEvent(status, subid, payload);
+
+    return res.status(200).json({ message: `Evento ${status} enviado com sucesso.` });
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-export const sendPurchaseEvent = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { clientId, value, currency, transaction_id } = req.body;
-
-    await gtmService.sendEvent('purchase', clientId, {
-      value,
-      currency,
-      transaction_id,
-    });
-
-    res.status(200).json({ message: 'PURCHASE event sent successfully.' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: 'Erro ao processar evento.' });
   }
 };
