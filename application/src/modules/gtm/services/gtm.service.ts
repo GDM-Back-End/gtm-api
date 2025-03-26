@@ -20,12 +20,12 @@ export class GtmService {
           params: {
             ...eventParams,
             engagement_time_msec: 1,
-          }
+          },
         },
       ],
     };
 
-    console.log('Enviando payload para GA4:', payload);
+    console.log('Sending payload to GA4:', payload);
     console.log('URL:', url);
     const response = await axios.post(url, payload);
     console.log('GA4 Response:', response.status, response.data);

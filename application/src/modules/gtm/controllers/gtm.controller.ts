@@ -5,19 +5,25 @@ const gtmService = new GtmService();
 
 export const handleGenericEvent = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { subid, status, payout, currency, user_email, user_phone } = req.params;
+    const {
+      status,
+      subid,
+      payout,
+      currency,
+      user_email,
+      user_phone,
+      ddi,
+      utm_campaign,
+    } = req.query;
 
-    if (!subid || !status) {
-      return res.status(400).json({ error: 'Mandatory fields: subid and status' });
+    if (!status || (status !== 'purchase' && status !== 'sign_up')) {
+      return res.status(400).json({ error: 'Invalid status. Use "purchase" or "sign_up".' });
     }
 
-    if (status !== 'purchase' && status !== 'sign_up') {
-      return res.status(400).json({ error: 'Invalid Status. Use "purchase" or "sign_up"' });
-    }
-
-    let payload: Record<string, any> = {
-      clickId: subid,
+    const payload: Record<string, any> = {
+      clickId: subid || 'default-subid',
       timeStamp: new Date().toISOString(),
+      utm_campaign,
     };
 
     if (status === 'purchase') {
@@ -27,14 +33,15 @@ export const handleGenericEvent = async (req: Request, res: Response): Promise<R
 
     if (status === 'sign_up') {
       payload.email = user_email;
-      payload.phone = user_phone;
+      payload.phone = `${ddi || ''}${user_phone || ''}`;
       payload.method = 'email';
     }
 
-    await gtmService.sendEvent(status, subid, payload);
+    await gtmService.sendEvent(status as 'purchase' | 'sign_up', String(payload.clickId), payload);
 
-    return res.status(200).json({ message: `Event ${status} sent successfully.` });
+    return res.status(200).json({ message: `Event "${status}" successfully sent to GA4.` });
   } catch (error) {
-    return res.status(500).json({ error: 'Error processing event.' });
+    console.error('Error sending event:', error);
+    return res.status(500).json({ error: 'Internal server error while processing event.' });
   }
 };
