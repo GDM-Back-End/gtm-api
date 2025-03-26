@@ -12,20 +12,22 @@ class App {
     this.app = express();
   }
 
+  /** 
   configureMiddlewares() {
     this.app.use(express.json());
     this.app.use(cors());
   }
+  */
 
   configureRoutes() {
-    setupSwagger(this.app);
+    //setupSwagger(this.app);
     this.app.use('/gtm', gtmRouter);
   }
 
   async startServer(port: number) {
     try {
       //await MongoConnection.connect();
-      this.configureMiddlewares();
+      //this.configureMiddlewares();
       this.configureRoutes();
       
       this.app.listen(port, () => {
