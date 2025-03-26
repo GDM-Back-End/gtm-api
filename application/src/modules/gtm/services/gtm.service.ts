@@ -13,15 +13,21 @@ export class GtmService {
     const url = `${this.endpoint}?measurement_id=${this.measurementId}&api_secret=${this.apiSecret}`;
 
     const payload = {
-      client_id: clientId,
+      client_id: '1234567890.1234567890',
       events: [
         {
           name: eventName,
-          params: eventParams,
+          params: {
+            ...eventParams,
+            engagement_time_msec: 1,
+          }
         },
       ],
     };
 
-    await axios.post(url, payload);
+    console.log('Enviando payload para GA4:', payload);
+    console.log('URL:', url);
+    const response = await axios.post(url, payload);
+    console.log('GA4 Response:', response.status, response.data);
   }
 }

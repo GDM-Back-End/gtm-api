@@ -1,3 +1,4 @@
+import '@config/env/dotenv.config';
 import express from "express";
 import cors from "cors";
 //import { MongoConnection } from "@config/database/mongodb.config";

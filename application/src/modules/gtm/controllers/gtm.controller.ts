@@ -8,11 +8,11 @@ export const handleGenericEvent = async (req: Request, res: Response): Promise<R
     const { subid, status, payout, currency, user_email, user_phone } = req.params;
 
     if (!subid || !status) {
-      return res.status(400).json({ error: 'Campos obrigatórios: subid e status' });
+      return res.status(400).json({ error: 'Mandatory fields: subid and status' });
     }
 
     if (status !== 'purchase' && status !== 'sign_up') {
-      return res.status(400).json({ error: 'Status inválido. Use "purchase" ou "sign_up"' });
+      return res.status(400).json({ error: 'Invalid Status. Use "purchase" or "sign_up"' });
     }
 
     let payload: Record<string, any> = {
@@ -33,8 +33,8 @@ export const handleGenericEvent = async (req: Request, res: Response): Promise<R
 
     await gtmService.sendEvent(status, subid, payload);
 
-    return res.status(200).json({ message: `Evento ${status} enviado com sucesso.` });
+    return res.status(200).json({ message: `Event ${status} sent successfully.` });
   } catch (error) {
-    return res.status(500).json({ error: 'Erro ao processar evento.' });
+    return res.status(500).json({ error: 'Error processing event.' });
   }
 };
