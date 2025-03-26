@@ -3,6 +3,6 @@ import { handleGenericEvent } from '@modules/gtm/controllers/gtm.controller';
 
 const gtmRouter = Router();
 
-gtmRouter.post('/', handleGenericEvent);
+gtmRouter.get('/', handleGenericEvent);
 
 export { gtmRouter };
